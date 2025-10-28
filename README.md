@@ -1,6 +1,6 @@
 # Análise de Desempenho de Algoritmos de Ordenação
 
-Este projeto compara o desempenho de 5 algoritmos de ordenação em Java, analisando o número de **trocas de elementos** e o número de **comparações** (iterações do laço) em três cenários de teste distintos:
+Este projeto compara o desempenho de 5 algoritmos de ordenação em Java, analisando o número de trocas de elementos e o número de comparações em três cenários de teste distintos:
 
 1.  **Vetor 1:** Um vetor desordenado com 20 elementos.
 2.  **Vetor 2:** Um vetor já ordenado (melhor caso para alguns algoritmos).
