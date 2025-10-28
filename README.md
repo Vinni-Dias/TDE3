@@ -1,19 +1,22 @@
 # Análise de Desempenho de Algoritmos de Ordenação
 
-Este projeto compara o desempenho de 5 algoritmos de ordenação em Java, analisando o número de trocas de elementos e o número de comparações em três cenários de teste distintos:
+Este projeto compara o desempenho de 6 algoritmos de ordenação em Java, analisando o número de trocas de elementos e o número de comparações (iterações do laço) em três cenários de teste distintos:
 
 1.  **Vetor 1:** Um vetor desordenado com 20 elementos.
 2.  **Vetor 2:** Um vetor já ordenado (melhor caso para alguns algoritmos).
 3.  **Vetor 3:** Um vetor ordenado em ordem inversa (pior caso para alguns algoritmos).
 
 Os algoritmos analisados são:
-* Bubble Sort 
+* Bubble Sort (com flag de parada)
 * Selection Sort
 * Cocktail Sort
 * Gnome Sort
 * Comb Sort
+* Bucket Sort
 
-## Resultados
+---
+
+## Resultados e Rankings
 
 Os resultados foram obtidos executando os algoritmos em cada vetor e contando as operações.
 
@@ -23,11 +26,12 @@ Os resultados foram obtidos executando os algoritmos em cada vetor e contando as
 #### Ranking de TROCAS (Menos é melhor)
 | Posição | Algoritmo | Trocas |
 | :--- | :--- | :--- |
-| **1** | **Selection Sort** | **12** |
-| 2 | Comb Sort | 30 |
-| 3 | Bubble Sort (Flag) | 97 |
-| 4 | Cocktail Sort | 97 |
-| 5 | Gnome Sort | 97 |
+| **1** | **Bucket Sort** | **0** |
+| 2 | Selection Sort | 12 |
+| 3 | Comb Sort | 30 |
+| 4 | Bubble Sort (Flag) | 97 |
+| 5 | Cocktail Sort | 97 |
+| 6 | Gnome Sort | 97 |
 
 #### Ranking de COMPARAÇÕES (Menos é melhor)
 | Posição | Algoritmo | Comparações |
@@ -36,7 +40,8 @@ Os resultados foram obtidos executando os algoritmos em cada vetor e contando as
 | 2 | Bubble Sort (Flag) | 190 |
 | 3 | Selection Sort | 190 |
 | 4 | Cocktail Sort | 190 |
-| 5 | Gnome Sort | 287 |
+| 5 | Bucket Sort | 219 |
+| 6 | Gnome Sort | 287 |
 
 ---
 
@@ -46,6 +51,7 @@ Os resultados foram obtidos executando os algoritmos em cada vetor e contando as
 #### Ranking de TROCAS (Menos é melhor)
 | Posição | Algoritmo | Trocas |
 | :--- | :--- | :--- |
+| **1 (Empate)** | **Bucket Sort** | **0** |
 | **1 (Empate)** | **Bubble Sort (Flag)** | **0** |
 | **1 (Empate)** | **Selection Sort** | **0** |
 | **1 (Empate)** | **Cocktail Sort** | **0** |
@@ -60,6 +66,7 @@ Os resultados foram obtidos executando os algoritmos em cada vetor e contando as
 | **1 (Empate)** | **Gnome Sort** | **19** |
 | 4 | Comb Sort | 48 |
 | 5 | Selection Sort | 190 |
+| 6 | Bucket Sort | 229 |
 
 ---
 
@@ -69,11 +76,12 @@ Os resultados foram obtidos executando os algoritmos em cada vetor e contando as
 #### Ranking de TROCAS (Menos é melhor)
 | Posição | Algoritmo | Trocas |
 | :--- | :--- | :--- |
-| **1** | **Selection Sort** | **10** |
-| 2 | Comb Sort | 24 |
-| 3 | Bubble Sort (Flag) | 190 |
-| 4 | Cocktail Sort | 190 |
-| 5 | Gnome Sort | 190 |
+| **1** | **Bucket Sort** | **0** |
+| 2 | Selection Sort | 10 |
+| 3 | Comb Sort | 24 |
+| 4 | Bubble Sort (Flag) | 190 |
+| 5 | Cocktail Sort | 190 |
+| 6 | Gnome Sort | 190 |
 
 #### Ranking de COMPARAÇÕES (Menos é melhor)
 | Posição | Algoritmo | Comparações |
@@ -82,31 +90,32 @@ Os resultados foram obtidos executando os algoritmos em cada vetor e contando as
 | 2 | Bubble Sort (Flag) | 190 |
 | 3 | Selection Sort | 190 |
 | 4 | Gnome Sort | 209 |
-| 5 | Cocktail Sort | 285 |
+| 5 | Bucket Sort | 239 |
+| 6 | Cocktail Sort | 285 |
 
 ---
 
 ## Análise e Conclusão
 
-Analisando os três cenários, podemos tirar as seguintes conclusões:
+Com a inclusão do Bucket Sort, a análise fica mais interessante:
 
 ### 1. Quem foi melhor em TROCAS?
 
-O **Selection Sort** foi o vencedor disparado na métrica de trocas em vetores desordenados e invertidos. Ele faz, no máximo, $O(n)$ trocas (uma para cada elemento), o que é excelente se a operação de troca for muito custosa.
+O **Bucket Sort** é o vencedor técnico, pois ele não realiza nenhuma troca de elementos. Ele é um algoritmo "out-of-place", que reconstrói a estrutura de dados em vez de modificá-la.
+
+Entre os algoritmos "in-place", o **Selection Sort** continua sendo o campeão de trocas, realizando o mínimo de movimentações necessárias.
 
 ### 2. Quem foi melhor em COMPARAÇÕES/ITERAÇÕES?
 
-O **Comb Sort** foi o vencedor claro em comparações para vetores desordenados e invertidos, mostrando sua eficiência na prática.
+O **Comb Sort** é o claro vencedor em velocidade $O(n \log n)$ para vetores desordenados e invertidos, pois suas comparações são muito eficientes.
 
-Para o vetor **já ordenado**, o **Bubble Sort**, **Cocktail Sort** e **Gnome Sort** foram os melhores, pois todos possuem mecanismos para detectar que o vetor está ordenado e parar cedo, alcançando um desempenho de $O(n)$.
+Para o vetor **já ordenado**, o **Bubble Sort (com flag)**, **Cocktail Sort** e **Gnome Sort** são imbatíveis, pois param em tempo $O(n)$.
 
-### 3. Quem foi o Pior?
-
-* O **Selection Sort**, apesar de ótimo em trocas, foi o pior em comparações no cenário ordenado, pois ele *sempre* executa seus dois laços independentemente da ordenação inicial.
-* O **Gnome Sort** e o **Cocktail Sort** tiveram um desempenho de comparações muito ruim nos cenários desordenado e invertido, sendo piores que o Bubble Sort simples.
+O **Bucket Sort** teve um número de "comparações" (cálculos de índice e checagens) estável, mas mais alto que os outros. Isso é esperado: ele troca comparações diretas por operações matemáticas e de alocação de memória (criação de Nodos). Em um conjunto de dados muito maior, ele superaria os algoritmos $O(n^2)$.
 
 ### Conclusão Geral
 
-* **Melhor Algoritmo Geral:** O **Comb Sort** é o algoritmo mais eficiente dos testados, dominando os cenários desordenado e invertido.
-* **Melhor para "Quase Ordenado":** O **Bubble Sort (com flag)** ou o **Gnome Sort** são as melhores escolhas se houver alta probabilidade de o vetor já estar ordenado ou quase ordenado, devido à sua parada antecipada $O(n)$.
-* **Melhor para "Poucas Trocas":** O **Selection Sort** é a escolha ideal se o custo de trocar elementos for muito mais alto que o custo de compará-los.
+* **Comb Sort:** É o melhor algoritmo de comparação testado para cenários genéricos (desordenado/invertido).
+* **Bubble/Gnome/Cocktail:** Excelentes para dados quase ordenados.
+* **Selection Sort:** O melhor se o custo de troca for a métrica mais importante.
+* **Bucket Sort:** Demonstra uma lógica completamente diferente. Ele vence em "trocas" (com 0), mas seu custo real está na complexidade espacial (uso de memória para os baldes e listas) e nas operações de alocação de Nodos, que não foram medidas aqui.
