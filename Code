@@ -1,0 +1,175 @@
+public class Main {
+
+    public static void main(String[] args) {
+        int[] vetor1 = { 12, 18, 9, 25, 17, 31, 22, 27, 16, 13, 19, 23, 20, 30, 14, 11, 15, 24, 26, 28 };
+        int[] vetor2 = { 5, 7, 9, 10, 12, 14, 15, 17, 19, 21, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32 };
+        int[] vetor3 = { 99, 85, 73, 60, 50, 40, 35, 30, 25, 20, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6 };
+
+        System.out.println("Iniciando Análise de Algoritmos de Ordenação");
+
+        System.out.println("\nVETOR 1 (Desordenado)");
+        rodarTestes(vetor1.clone());
+
+        System.out.println("\nVETOR 2 (Ordenado - Melhor Caso)");
+        rodarTestes(vetor2.clone());
+
+        System.out.println("\nVETOR 3 (Invertido - Pior Caso)");
+        rodarTestes(vetor3.clone());
+    }
+
+    public static void rodarTestes(int[] vetor) {
+        System.out.println("Algoritmo, Trocas, Comparações");
+        
+        long[] resBubble = bubbleSort(vetor.clone());
+        System.out.println("Bubble Sort (Flag), " + resBubble[0] + ", " + resBubble[1]);
+
+        long[] resSelection = selectionSort(vetor.clone());
+        System.out.println("Selection Sort, " + resSelection[0] + ", " + resSelection[1]);
+
+        long[] resCocktail = cocktailSort(vetor.clone());
+        System.out.println("Cocktail Sort, " + resCocktail[0] + ", " + resCocktail[1]);
+
+        long[] resGnome = gnomeSort(vetor.clone());
+        System.out.println("Gnome Sort, " + resGnome[0] + ", " + resGnome[1]);
+
+        long[] resComb = combSort(vetor.clone());
+        System.out.println("Comb Sort, " + resComb[0] + ", " + resComb[1]);
+    }
+
+    public static long[] bubbleSort(int[] arr) {
+        long trocas = 0;
+        long comparacoes = 0;
+        int n = arr.length;
+        boolean trocou;
+        for (int i = 0; i < n - 1; i++) {
+            trocou = false;
+            for (int j = 0; j < n - 1 - i; j++) {
+                comparacoes++;
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    trocas++;
+                    trocou = true;
+                }
+            }
+            if (!trocou) {
+                break;
+            }
+        }
+        return new long[] { trocas, comparacoes };
+    }
+
+    public static long[] selectionSort(int[] arr) {
+        long trocas = 0;
+        long comparacoes = 0;
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            int min_idx = i;
+            for (int j = i + 1; j < n; j++) {
+                comparacoes++;
+                if (arr[j] < arr[min_idx]) {
+                    min_idx = j;
+                }
+            }
+            if (min_idx != i) {
+                int temp = arr[min_idx];
+                arr[min_idx] = arr[i];
+                arr[i] = temp;
+                trocas++;
+            }
+        }
+        return new long[] { trocas, comparacoes };
+    }
+
+    public static long[] cocktailSort(int[] arr) {
+        long trocas = 0;
+        long comparacoes = 0;
+        boolean trocou = true;
+        int inicio = 0;
+        int fim = arr.length;
+
+        while (trocou) {
+            trocou = false;
+            for (int i = inicio; i < fim - 1; ++i) {
+                comparacoes++;
+                if (arr[i] > arr[i + 1]) {
+                    int temp = arr[i];
+                    arr[i] = arr[i + 1];
+                    arr[i + 1] = temp;
+                    trocas++;
+                    trocou = true;
+                }
+            }
+            if (!trocou)
+                break;
+            trocou = false;
+            fim--;
+            
+            for (int i = fim - 1; i >= inicio; i--) {
+                comparacoes++;
+                if (arr[i] > arr[i + 1]) {
+                    int temp = arr[i];
+                    arr[i] = arr[i + 1];
+                    arr[i + 1] = temp;
+                    trocas++;
+                    trocou = true;
+                }
+            }
+            inicio++;
+        }
+        return new long[] { trocas, comparacoes };
+    }
+
+    public static long[] gnomeSort(int[] arr) {
+        long trocas = 0;
+        long comparacoes = 0;
+        int n = arr.length;
+        int pos = 0;
+        while (pos < n) {
+            if (pos == 0) {
+                pos++;
+            }
+            comparacoes++;
+            if (arr[pos] >= arr[pos - 1]) {
+                pos++;
+            } else {
+                int temp = arr[pos];
+                arr[pos] = arr[pos - 1];
+                arr[pos - 1] = temp;
+                trocas++;
+                pos--;
+            }
+        }
+        return new long[] { trocas, comparacoes };
+    }
+
+    public static long[] combSort(int[] arr) {
+        long trocas = 0;
+        long comparacoes = 0;
+        int n = arr.length;
+        int gap = n;
+        boolean trocou = true;
+
+        while (gap != 1 || trocou) {
+            gap = (gap * 10) / 13;
+            if (gap < 1) {
+                gap = 1;
+            }
+
+            trocou = false;
+            
+            for (int i = 0; i < n - gap; i++) {
+                comparacoes++;
+                if (arr[i] > arr[i + gap]) {
+                    int temp = arr[i];
+                    arr[i] = arr[i + gap];
+                    arr[i + gap] = temp;
+                    trocas++;
+                    trocou = true;
+                }
+            }
+        }
+        return new long[] { trocas, comparacoes };
+    }
+}
